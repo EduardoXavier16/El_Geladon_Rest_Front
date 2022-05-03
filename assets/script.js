@@ -1,7 +1,7 @@
 const baseURL = "http://localhost:3000/paletas";
 
 async function findAllPaletas() {
-  const response = await fetch(`${baseURL}/todas-paletas`);
+  const response = await fetch(`${baseURL}/all-paletas`);
 
   const paletas = await response.json();
   paletas.forEach((paleta) => {
@@ -35,7 +35,7 @@ findAllPaletas();
 
 async function findByIdPaleta() {
   const id = document.querySelector("#idPaleta").value
-  const response = await fetch(`${baseURL}/paleta/${id}`);
+  const response = await fetch(`${baseURL}/one-paleta/${id}`);
   const paleta = await response.json();
   const paletaEscolhidaDiv = document.querySelector("#paletaEscolhida");
   paletaEscolhidaDiv.innerHTML = 
@@ -99,7 +99,7 @@ async function createPaleta(){
 
   const modoEdicaoAtivado = id > 0;
 
-  const endpoint = baseURL + (modoEdicaoAtivado ? `/update/${id}` : `/create`);
+  const endpoint = baseURL + (modoEdicaoAtivado ? `/update-paleta/${id}` : `/create-paleta`);
 
   const response = await fetch(endpoint, {
     method: modoEdicaoAtivado ? "put" : "post");
@@ -135,7 +135,25 @@ async function createPaleta(){
   document.querySelector("#paletaList"). insertAdjacentHTML("beforeend", html);
 
   fecharModalCadastro();
-};
+}
+
+async function deletePaleta (id) {
+  const response = await fetch(`${baseURL}/delete-paleta/${id}`, {
+    method: "delete",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    node: "cors",
+  });
+
+  const result = await response.json();
+  alert(result.message);
+
+  document.getElementById("paletaList").innerHTML = ""
+
+  fecharModalDelete();
+  findAllPaletas();
+}
 
 
 
