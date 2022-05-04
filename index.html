@@ -43,7 +43,8 @@
 
           </div>
       </div>
-      <section class="button-modal-create">
+      <section class="options">
+        <span class="msg-alert"> Menssagem </span>
         <button type="button" class="default-button" onclick="abrirModal()">Cadastrar Paleta</button>
     </section>
 
@@ -64,7 +65,7 @@
                     <textarea type="text" name="descricao" id="descricao" placeholder="Descrição da Paleta"
                         rows="5"></textarea>
                     <input type="text" name="foto" id="foto" placeholder="Link da Foto da Paleta">
-                    <button id="button-form-modal" onclick="createPaleta(event)">Cadastrar</button>
+                    <button id="button-form-modal" onclick="submitPaleta(event)">Cadastrar</button>
                 </div>
             </div>
         </div>

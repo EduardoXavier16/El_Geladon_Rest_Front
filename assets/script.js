@@ -1,13 +1,24 @@
 const baseURL = "http://localhost:3000/paletas";
+const msgAlert = document.querySelector(".msg-alert");
 
 async function findAllPaletas() {
   const response = await fetch(`${baseURL}/all-paletas`);
-
   const paletas = await response.json();
+
+  if(paletas.message != undefined) {
+    localStorage.setItem('message', paletas.message);
+    localStorage.setItem('type', "danger");
+
+    msgAlert.innerText = localStorage.getItem("message");
+    msgAlert.classList.add(localStorage.getItem("type"));
+    closeMessageAlert();
+    return;
+  };
+
   paletas.forEach((paleta) => {
     document.getElementById("paletaList").insertAdjacentHTML(
       "beforeend",
-      `<div class="PaletaListaItem" id="PaletaListaItem_${paleta.id}">
+      `<div class="PaletaListaItem" id="PaletaListaItem_${paleta._id}">
             <div>
                 <div class="PaletaListaItem__sabor">${paleta.sabor}</div>
                 <div class="PaletaListaItem__preco">R$ ${paleta.preco.toFixed(
@@ -17,7 +28,7 @@ async function findAllPaletas() {
                   paleta.descricao
                 }</div>
                 <div class= "PaletaListaItem__acoes">
-                  <button class= "Acoes__editar btn" onclick="abrirModal(${paleta.id})">Editar</button>
+                  <button class= "Acoes__editar btn" onclick="abrirModal('${paleta._id}')">Editar</button>
                   <button class= "Acoes__apagar btn" onclick="">Apagar</button>
                 </div>
             </div>
@@ -35,11 +46,22 @@ findAllPaletas();
 
 async function findByIdPaleta() {
   const id = document.querySelector("#idPaleta").value
+
+  if(paletas.message != undefined) {
+    localStorage.setItem('message', "Digite um ID para pesquisar!");
+    localStorage.setItem('type', "danger");
+
+    msgAlert.innerText = localStorage.getItem("message");
+    msgAlert.classList.add(localStorage.getItem("type"));
+    closeMessageAlert();
+    return;
+  };
+
   const response = await fetch(`${baseURL}/one-paleta/${id}`);
   const paleta = await response.json();
   const paletaEscolhidaDiv = document.querySelector("#paletaEscolhida");
   paletaEscolhidaDiv.innerHTML = 
-  `<div class="PaletaCardItem" id="PaletaListaItem_${paleta.id}">
+  `<div class="PaletaCardItem" id="PaletaListaItem_${paleta._id}">
     <div>
       <div class="PaletaCardItem__sabor">${paleta.sabor}</div>
       <div class="PaletaCardItem__preco">R$ ${paleta.preco.toFixed(2)}</div>
@@ -64,7 +86,7 @@ async function abrirModal(id = null) {
     document.querySelector("#preco").value = paleta.preco;
     document.querySelector("#descricao").value = paleta.descricao;
     document.querySelector("#foto").value = paleta.foto;
-    document.querySelector("#foto").value = paleta.id;
+    document.querySelector("#foto").value = paleta._id;
 
   }else{
     document.querySelector('#title-header-modal').innerText = "Cadastrar uma paleta"
@@ -81,7 +103,7 @@ function fecharModalCadastro() {
   document.querySelector("#foto").value = "";
 }
 
-async function createPaleta(){
+async function submitPaleta(){
   const id = document.querySelector("#id").value;
   const sabor = document.querySelector("#sabor").value;
   const preco = document.querySelector("#preco").value;
@@ -97,7 +119,7 @@ async function createPaleta(){
     foto,
   };
 
-  const modoEdicaoAtivado = id > 0;
+  const modoEdicaoAtivado = id != "";
 
   const endpoint = baseURL + (modoEdicaoAtivado ? `/update-paleta/${id}` : `/create-paleta`);
 
@@ -112,29 +134,15 @@ async function createPaleta(){
 
   const novaPaleta = await response.json();
 
-  const html = 
-  `<div class="PaletaListaItem" id="PaletaListaItem_${paleta.id}">
-  <div>
-      <div class="PaletaListaItem__sabor">${novaPaleta.sabor}</div>
-      <div class="PaletaListaItem__preco">R$ ${novaPaleta.preco.toFixed(
-        2
-      )}</div>
-      <div class="PaletaListaItem__descricao">${
-        novaPaleta.descricao
-      }</div>
-  </div>
-      <img class="PaletaListaItem__foto" src=${
-        novaPaleta.foto
-      } alt=${`Paleta de ${novaPaleta.sabor}`} />
-  </div>`;
+  document.location.reload(true);
 
-  if(modoEdicaoAtivado){
-    document.querySelector(`PaletaListaItem_${id}`).outerHTML = html
-  }
+  // if(modoEdicaoAtivado){
+  //   document.querySelector(`PaletaListaItem_${id}`).outerHTML = html
+  // }
 
-  document.querySelector("#paletaList"). insertAdjacentHTML("beforeend", html);
+  // document.querySelector("#paletaList"). insertAdjacentHTML("beforeend", html);
 
-  fecharModalCadastro();
+  fecharModal();
 }
 
 async function deletePaleta (id) {
@@ -147,13 +155,14 @@ async function deletePaleta (id) {
   });
 
   const result = await response.json();
-  alert(result.message);
-
-  document.getElementById("paletaList").innerHTML = ""
-
+  document.location.reload(true);
   fecharModalDelete();
-  findAllPaletas();
 }
 
-
-
+function closeMessageAlert(){
+  setTimeout(function () {
+    msgAlert.innerText = "";
+    msgAlert.classList.remove(localStorage.getItem("type"));
+    localStorage.clear();
+  }, 3000);
+};

@@ -345,9 +345,35 @@ html {
   color: #fff;
 }
 
-.button-modal-create{
+.options{
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto 25px auto;
+  max-width: 1110px;
+}
+
+.msg-alert{
+  width: 20%;
+  text-align: center;
+  z-index: 999999;
+  font-weight: 600;
+}
+
+.secess{
+  background-color: #a4ffa4;
+  color: #006905;
+  border: solid 1px #006905;
+  padding: .8rem;
+  border-radius: 0.3rem;
+}
+
+.danger{
+  background-color: #ffa4a4;
+  color: #690000;
+  border: solid 1px #690000;
+  padding: .8rem;
+  border-radius: 0.3rem;
 }
 
 .Acoes{
@@ -389,3 +415,4 @@ html {
   color: #fff;
   background-color: #ff0000;
 }
+
