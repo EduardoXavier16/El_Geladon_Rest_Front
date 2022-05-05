@@ -45,18 +45,29 @@ async function findAllPaletas() {
 findAllPaletas();
 
 async function findByIdPaleta() {
-  const id = document.querySelector("#idPaleta").value
+  const id = document.querySelector("#idPaleta").value;
+
+  if (id == "") {
+    localStorage.setItem("message", "Digite um ID para pesquisar!");
+    localStorage.setItem("type", "dager");
+    msgAlert.innerText = localStorage.getItem("message");
+    msgAlert.classList.add(localStorage.getItem("type"));
+    closeMessageAlert();
+    return;
+  }
 
   const response = await fetch(`${baseURL}/one-paleta/${id}`);
   const paleta = await response.json();
 
-  if(paletas.message != undefined) {
+  if(paleta.message != undefined) {
     localStorage.setItem('message', "Digite um ID para pesquisar!");
     localStorage.setItem('type', "danger");
     showMessageAlert();
     return;
   };
 
+  document.querySelector(".list-all").style.display = "block";
+  document.querySelector(".PaletaLista").style.display = "nome";
   const paletaEscolhidaDiv = document.querySelector("#paletaEscolhida");
   paletaEscolhidaDiv.innerHTML = 
   `<div class="PaletaCardItem" id="PaletaListaItem_${paleta._id}">
@@ -65,6 +76,7 @@ async function findByIdPaleta() {
       <div class="PaletaCardItem__preco">R$ ${paleta.preco.toFixed(2)}</div>
       <div class="PaletaCardItem__descricao">${paleta.descricao}</div>
     </div>
+    <div class="PaletaListaItem__acoes Acoes">
       <img class="PaletaCardItem__foto" src=${
         paleta.foto
       } alt=${`Paleta de ${paleta.sabor}`} />

@@ -5,7 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./assets/style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="shotcut icon" type="image/svg" href="assets/images/logo.svg">
     <title>El Geladon</title>
+    
   </head>
   <body>
     <section class="Home">
@@ -22,30 +25,20 @@
           </div>
 
           <div class="Header__opcoes Opcoes">
-            <div class="Opcoes__sacola Sacola">
-              <img
-                src="assets/images/icons/sacola.svg"
-                width="40px"
-                class="Sacola__icone"
-                alt="Sacola de compras"
-              />
-            </div>
+            <input type="text" id="idPaleta" placeholder="Digite o ID da paleta e clique em 'Escolher'" />
+            <button id="idPaletaButton" onclick="findByIdPaleta()"><i class="bi bi-search"></i></button>
           </div>
         </div>
       </div>
-      <h2>Pesquisar Paleta</h2>
-      <div class="paleta-escolhida-espaco">
-          <div id="paleta-escolhida-input-espaco">
-              <input type="text" id="idPaleta" placeholder="Digite o ID da paleta e clique em 'Escolher'" />
-              <button id="idPaletaButton" onclick="findByIdPaleta()">ESCOLHER</button>
-          </div>
-          <div id="paletaEscolhidaDiv">
-
+     
           </div>
       </div>
       <section class="options">
         <span class="msg-alert"> Menssagem </span>
+        <div class="btns-list-cad">
+          <a href="/" class="defaut-button list-all"> Listar todas as paletas </a>
         <button type="button" class="default-button" onclick="abrirModal()">Cadastrar Paleta</button>
+        </div>
     </section>
 
     <section class="modal-overlay" id="overlay">
@@ -69,11 +62,14 @@
                 </div>
             </div>
         </div>
+
     </section>
-      <h2>Paletas Disponíveis:</h2>
+
       <div class="Home__container">
         <div class="PaletaLista" id="paletaList"></div>
+        <div id="paletaEscolhidaDiv"></div>
       </div>
+      
     </section>
 
     <script src="./assets/script.js"></script>
