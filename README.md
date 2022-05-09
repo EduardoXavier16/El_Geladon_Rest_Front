@@ -1,2 +1,2 @@
-# El_Geladon_Rest_Front
-Projeto 03 do módulo 03 da Blue
+# Gelateria_Blue_Client
+Projeto final parte de Frontend do módulo 03 turma 11 da Blue 
